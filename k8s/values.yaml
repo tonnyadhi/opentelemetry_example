@@ -1,0 +1,31 @@
+# Default values for js-sentry-example.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+certificate:
+  name: opentelemetry-example-cert
+  domainName: opentelemetry-example.pdg.mapan.io
+  issuerKind: Issuer
+  issuerName: letsencrypt-prod
+  secretName: opentelemtery-example-dev-cert
+  namespace: istio-system
+
+deployment:
+  name: opentelemetry-example
+  namespace: opentelemetry-example
+  replicas: 1
+  label: opentelemetry-example
+  containerNameWeatherService: weather-service
+  containerImageWeatherService: ragnalinux/opentelemety-example_weather-service:latest
+  containerNameWeatherAdapterService: weather-adapter-service
+  containerImageWeatherAdapterService: ragnalinux/opentelemety-example_weather-adapter-service:latest
+  requestCPU: 200m
+  requestMemory: 32M
+  limitCPU: 500m
+  limitMemory: 64M
+  httpPortWeatherService: 9191
+  httpPortWeatherAdapterService: 8181
+  healthPath: /ping
+  jaegerEndpoint: http://jaeger-collector.istio-system.svc.cluster.local:14268/api/traces
+  adapterHost: http://weather-adapter-service.opentelemetry-example.svc.cluster.local:8181
+  owmAppID: 5c118526d22ec862ba9d146bad2f3c45

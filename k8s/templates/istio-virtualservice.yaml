@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: opentelemetry-example
+  namespace: opentelemetry-example
+spec:
+  hosts:
+  - "*"
+  gateways:
+    - istio-system/opentelemetry-example
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: weather-service
+        port:
+          number: {{ .Values.deployment.httpPortWeatherService }}

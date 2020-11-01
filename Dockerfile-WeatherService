@@ -1,0 +1,21 @@
+FROM golang:latest as builder
+LABEL maintainer="tonny.adhi@ruma.co.id"
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+# Build the Go app
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags="-s -w" -o weather_svc weather_service/*.go
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+COPY --from=builder /app/weather_svc .
+# Expose port 9191 to the outside world
+EXPOSE 9191
+
+# Command to run the executable
+CMD ["./weathermap_svc"]
